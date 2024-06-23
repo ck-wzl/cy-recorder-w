@@ -140,7 +140,18 @@ const handleClickReset = () => {
 // 复制内容到剪贴板
 const copyToClipboard = async (type: ContentType) => {
     try {
-        const toBeCopied = codeBlocks.value.map(item => item[type]).join('\n')
+        const isPrompt = type === ContentType.Prompt
+
+        const codeString = codeBlocks.value.map((item, idx) => {
+            return isPrompt ? `${idx + 1}. ${item[type]}` : item[type]
+        }).join('\n')
+
+        const toBeCopied = isPrompt ? codeString : `
+            it('some brief description', () => {
+                ${codeString}
+            });
+        `
+
         await navigator.clipboard.writeText(toBeCopied)
         return true
     } catch (error) {
