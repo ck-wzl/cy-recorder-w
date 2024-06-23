@@ -29,3 +29,5 @@ coverage/
 # Environment variables
 .env.local
 .env.*.local
+
+extension/manifest.json
